@@ -63,7 +63,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
 import axios from 'axios'
 
@@ -73,10 +73,53 @@ export default defineComponent({
     HelloWorld,
   },
   setup(){
-     console.log("setup");
-     axios.get("http://localhost:8080/ebook/list?name=Spring").then((res) => {
-       console.log(res)
-     })
+    const ebooks = ref();
+    const openKeys = ref();
+    const isShowWelcome = ref(true);
+    let categoryId2 = 0;
+
+    const handleQueryEbook = () => {
+      axios.get("ebook/list", {
+        params: {
+          page: 1,
+          size: 1000,
+          categoryId2: categoryId2
+        }
+      }).then((res) => {
+        const data = res.data;
+        ebooks.value = data.content.list
+      })
+    }
+
+    const handleClick = (value: any) => {
+      if(value.key === 'welcome'){
+        isShowWelcome.value = true;
+      }else{
+        categoryId2 = value.key;
+        isShowWelcome.value = false;
+        handleQueryEbook();
+      }
+    }
+
+    handleQueryEbook()
+
+    return {
+      ebooks,
+      handleClick,
+      isShowWelcome,
+      openKeys
+    }
+
   }
 });
 </script>
+
+<style scoped>
+.ant-avatar {
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  border-radius: 8%;
+  margin: 5px 0;
+}
+</style>
