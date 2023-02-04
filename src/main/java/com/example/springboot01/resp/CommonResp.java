@@ -1,4 +1,4 @@
-package com.jiawa.wiki.resp;
+package com.example.springboot01.resp;
 
 public class CommonResp<T> {
 
@@ -41,13 +41,13 @@ public class CommonResp<T> {
         this.content = content;
     }
 
+    @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("ResponseDto{");
         sb.append("success=").append(success);
         sb.append(", message='").append(message).append('\'');
         sb.append(", content=").append(content);
         sb.append('}');
-        System.out.println(sb.toString());
         return sb.toString();
     }
 }
